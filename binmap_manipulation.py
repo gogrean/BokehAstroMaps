@@ -1,4 +1,5 @@
 import pyfits
+import numpy as np
 
 def read_binmap(ImFile):
     hdu = pyfits.open(ImFile)
@@ -9,7 +10,14 @@ def read_binmap(ImFile):
     return BinIm, hdr
 
 def filter_bin(im, bin):
-    im[im != bin] = 0
-    im[im == bin] = 1
-    return im
+    imcopy = im.copy()
+    imcopy[im != bin] = 0
+    imcopy[im == bin] = 1
+    return imcopy
+    
+def find_bins(im):
+    bins = []
+    maxbin = np.max(im)
+    [bins.append(i) for i in np.arange(maxbin+1) if i in im]
+    return bins
 
