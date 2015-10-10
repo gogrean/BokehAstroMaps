@@ -18,10 +18,11 @@ def edge_detect(im, hdr):
     ra_edge = []
     dec_edge = []
     for (x,y) in reg:
-        if 0 in im[find_neighbors(im,x,y)]:
-            x_edge, y_edge = w.wcs_pix2world(y,x,0)
-            ra_edge.append(float(x_edge))
-            dec_edge.append(float(y_edge))
+        if 0 not in im[find_neighbors(im,x,y)]:
+            continue
+        x_edge, y_edge = w.wcs_pix2world(y,x,0)
+        ra_edge.append(float(x_edge))
+        dec_edge.append(float(y_edge))
     return ra_edge, dec_edge
 
 

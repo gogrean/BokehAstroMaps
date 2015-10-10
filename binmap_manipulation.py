@@ -21,3 +21,5 @@ def find_bins(im):
     [bins.append(i) for i in np.arange(maxbin+1) if i in im]
     return bins
 
+
+
