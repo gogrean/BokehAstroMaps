@@ -18,14 +18,25 @@ yaxis_label = "Dec (J2000)"
 
 # Number of the Xspec parameter being plotted.
 xcm_id = 11
+
+# Parameter description.
 xcm_param = 'Temperature'
+
+# Units of the parameter.
 xcm_units = 'keV'
+
+# Colormap properties.
+# Colormap name. Default is 'coolwarm', in which cold regions are blue and hot regions are red.
+cmap = 'coolwarm'
+# Colormap limits. By default, these are min(parameter) and max(parameter). 
+vmin = None
+vmax = None
 
 
 plot_patches(root, binmap, xcm_id, 
         out=out, out_title=out_title,
         title_font_size=title_font_size, label_font_size=label_font_size,
         xcm_param=xcm_param, xcm_units=xcm_units,
-        xaxis_label=xaxis_label, yaxis_label=yaxis_label, palette='coolwarm')
+        xaxis_label=xaxis_label, yaxis_label=yaxis_label, palette=cmap, vmin=vmin, vmax=vmax)
 
 
