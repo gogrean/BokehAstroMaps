@@ -20,8 +20,11 @@ def grab_data(BinIm, Hdr, XCMroot, param, param_description):
     data = {}
     bins = find_bins(BinIm)
     for bin in bins:
+        ThreshIm = filter_bin(BinIm, bin)
         XCMfile = XCMroot + "/xaf_" + str(bin) + ".log"
-        ra, dec = edge_detect(filter_bin(BinIm, bin), Hdr)
+        ra, dec, exclude = edge_detect(ThreshIm, Hdr)
+        if exclude:
+            continue
         p, perr_lo, perr_hi = read_param(XCMfile, param)
         data[bin] = {
             'bin': bin,
@@ -32,7 +35,7 @@ def grab_data(BinIm, Hdr, XCMroot, param, param_description):
             'err_lo': perr_lo,
             'err_hi': perr_hi
         }
-    return ColumnDataSource(data)
+    return data
     
 
 

@@ -1,28 +1,23 @@
 import numpy as np
 import pyfits
 from astropy.wcs import WCS
-
-def find_neighbors(im, xcoord, ycoord):
-    neighbors = []
-    rows, cols = im.shape[0], im.shape[1]
-    for x,y in [(xcoord+i,ycoord+j) for i in [-1,0,1] for j in [-1,0,1] if abs(i) != abs(j)]:
-        if x in np.arange(rows) and y in np.arange(cols):
-            neighbors.extend([x,y])
-    return neighbors
+from skimage import measure
 
 def edge_detect(im, hdr):
     w = WCS(hdr)
-    rows = im.shape[0]
-    cols = im.shape[1]
-    reg = np.argwhere(im != 0)
-    ra_edge = []
-    dec_edge = []
-    for (x,y) in reg:
-        if 0 not in im[find_neighbors(im,x,y)]:
-            continue
-        x_edge, y_edge = w.wcs_pix2world(y,x,0)
-        ra_edge.append(float(x_edge))
-        dec_edge.append(float(y_edge))
-    return ra_edge, dec_edge
+    ra = []
+    dec = []
+    contours = measure.find_contours(im,0.5,fully_connected='high')
+    x_pix = contours[0][:,0]
+    y_pix = im.shape[1] - contours[0][:,1] - 1
+    exclude = False
+    if len(contours) >= 5:
+        exclude = True
+    for i in np.arange(len(x_pix)):
+        x, y = w.wcs_pix2world(y_pix[i], x_pix[i], 0)
+        ra.append(x)
+        dec.append(y)
+    return ra, dec, exclude
+    
 
 
