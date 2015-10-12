@@ -15,13 +15,13 @@ def read_param(XCMfile, param):
             break
     return p, perr_lo, perr_hi
 
-def grab_data(BinIm, Hdr, XCMroot, param):
+def grab_data(BinIm, Hdr, XCMroot, param, point_sources=True):
     data = {}
     bins = find_bins(BinIm)
     for bin in bins:
         ThreshIm = filter_bin(BinIm, bin)
         XCMfile = XCMroot + "/xaf_" + str(bin) + ".log"
-        ra, dec, exclude = edge_detect(ThreshIm, Hdr)
+        ra, dec, exclude = edge_detect(ThreshIm, Hdr, point_sources=point_sources)
         if exclude:
             continue
         p, perr_lo, perr_hi = read_param(XCMfile, param)
