@@ -1,7 +1,6 @@
 import re
 from binmap_manipulation import *
-from edge_detector import edge_detect
-from bokeh.plotting import ColumnDataSource
+from edge_detector import *
 
 def read_param(XCMfile, param):
     seq = " " * 7
@@ -16,7 +15,7 @@ def read_param(XCMfile, param):
             break
     return p, perr_lo, perr_hi
 
-def grab_data(BinIm, Hdr, XCMroot, param, param_description):
+def grab_data(BinIm, Hdr, XCMroot, param):
     data = {}
     bins = find_bins(BinIm)
     for bin in bins:
@@ -30,7 +29,6 @@ def grab_data(BinIm, Hdr, XCMroot, param, param_description):
             'bin': bin,
             'RA': ra,
             'Dec': dec,            
-            'param': param_description,
             'best-fit': p,
             'err_lo': perr_lo,
             'err_hi': perr_hi
