@@ -13,7 +13,6 @@ def filter_bin(im, bin):
     imcopy = im.copy()
     imcopy[im == bin] = 1
     imcopy[im != bin] = 0
-    pyfits.writeto('bin'+str(bin)+'.fits',imcopy,clobber=True)
     return imcopy
     
 def find_bins(im):
