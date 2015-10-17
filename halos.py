@@ -24,11 +24,11 @@ def filter_clusters(file, categories=["Limit+SZ", "Limit-SZ", "RHclusters"]):
     clusters["RHclusters"] = data[(data["RadioLimit?"] == False) & (data["WithSZ?"] == True)]
     return clusters
     
-def lx_range(lx_min, steps):
-    return np.array(lx_min + np.arange(steps)*lx_min)
+def lx_range(lx_min, lx_max):
+    return np.logspace(np.log10(lx_min), np.log10(lx_max), num=1000)
 
-def fitting_powerlaw(lx_min, steps, const=[ufloat(0.083,0.058), ufloat(2.11,0.21)]):
-    x = lx_range(lx_min, steps)
+def fitting_powerlaw(lx_min, lx_max, const=[ufloat(0.083,0.058), ufloat(2.11,0.21)]):
+    x = lx_range(lx_min, lx_max)
     y = (10**24.5) * ((x/1e45)**const[1]) * (10**const[0])
     y_nom = unumpy.nominal_values(y)
     y_min = unumpy.nominal_values(y) - unumpy.std_devs(y)
@@ -107,9 +107,9 @@ def plot_clusters(file, categories = ["Limit+SZ", "Limit-SZ", "RHclusters"],
             hover[index].tooltips = tooltips0 + extra_tooltips[index]
         index += 1
     
-    lx_min, steps = 1e44, 1e2
-    lx_arr = lx_range(lx_min,steps)
-    pow_nom, pow_min, pow_max = fitting_powerlaw(lx_min,steps)
+    lx_min, lx_max = 1e43, 1e46
+    lx_arr = lx_range(lx_min,lx_max)
+    pow_nom, pow_min, pow_max = fitting_powerlaw(lx_min,lx_max)
 
     ln = p.line(x=lx_arr/1e44, y=pow_nom/1e24, color="#36454F", line_width=3)
 #    ln = p.line(x=[1.,50.], y=[0.1,100.], color="#36454F", line_width=3)
