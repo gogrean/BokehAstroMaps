@@ -42,5 +42,4 @@ def fitting_powerlaw_YP(sz_min, sz_max,
     return y_nom, y_min, y_max
 
 
-# p.circle(x=lx_arr/1e44, y=pow_nom/1e24, color="#36454F", fill_alpha=0.1, size=10)
 # p.patch(x='lx', y='pow', color="#36454F", fill_alpha=0.25, source=source)
