@@ -1,4 +1,6 @@
 import re
+import numpy as np
+import math
 from binmap_manipulation import *
 from edge_detector import *
 
@@ -15,16 +17,19 @@ def read_param(XCMfile, param):
             break
     return p, perr_lo, perr_hi
 
-def grab_data(BinIm, Hdr, XCMroot, param, point_sources=True):
+def grab_data(BinIm, Hdr, XCMroot, param):
     data = {}
     bins = find_bins(BinIm)
     for bin in bins:
         ThreshIm = filter_bin(BinIm, bin)
         XCMfile = XCMroot + "/xaf_" + str(bin) + ".log"
-        ra, dec, exclude = edge_detect(ThreshIm, Hdr, point_sources=point_sources)
-        if exclude:
-            continue
+        ra, dec, exclude_RA, exclude_DEC = edge_detect(ThreshIm, Hdr)
         p, perr_lo, perr_hi = read_param(XCMfile, param)
+        if type(exclude_RA) is list:
+            exclude_RA.insert(0, ra)
+            ra = exclude_RA
+            exclude_DEC.insert(0, dec)
+            dec = exclude_DEC
         data[bin] = {
             'bin': bin,
             'RA': ra,
@@ -33,6 +38,7 @@ def grab_data(BinIm, Hdr, XCMroot, param, point_sources=True):
             'err_lo': perr_lo,
             'err_hi': perr_hi
         }
+
     return data
     
 

@@ -6,7 +6,7 @@ from collections import OrderedDict
 from bokeh.plotting import figure, show, output_file, ColumnDataSource
 from bokeh.models import HoverTool
 
-def plot_patches(root, binmap, xcm_id, point_sources=True, 
+def plot_patches(root, binmap, xcm_id, 
         out='bokeh_map.html', out_title='',
         title_font_size='16pt', label_font_size='14pt',
         xcm_param='XCM parameter', xcm_units='',
@@ -14,7 +14,7 @@ def plot_patches(root, binmap, xcm_id, point_sources=True,
         palette=None, vmin=None, vmax=None):
 
     BinIm, Hdr = read_binmap(root + "/" + binmap)
-    MapInfo = grab_data(BinIm, Hdr, root, xcm_id, point_sources=point_sources)
+    MapInfo = grab_data(BinIm, Hdr, root, xcm_id)
 
     output_file(out, title=out_title)
 
